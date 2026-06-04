@@ -1,0 +1,3 @@
+authcontroller --> to write the api logic for each page
+routes --> inb which api does that logic should run
+models--> for schema
