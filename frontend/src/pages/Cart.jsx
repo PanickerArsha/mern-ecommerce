@@ -13,6 +13,7 @@ export default function Cart() {
     const res = await api.get(`/cart/${userId}`);
     setCart(res.data);
   };
+  
 
   useEffect(() => {
     loadCart();

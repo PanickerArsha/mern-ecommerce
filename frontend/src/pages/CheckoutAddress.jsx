@@ -11,7 +11,7 @@ export default function CheckoutAddress() {
         phone: '',
         city: '',
         state: '',
-        pincode: '',
+        pinCode: '',
     });
 
     const handleChange = (e) => {

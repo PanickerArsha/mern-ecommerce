@@ -1,4 +1,4 @@
-import Cart from "../models/cart.js";
+import Cart from "../models/Cart.js";
 import mongoose from 'mongoose';
 
 // Add a product to the cart 
