@@ -29,7 +29,9 @@ export const getProducts = async (req, res) => {
         }
         //get all products and sort by createdAt in descending order
         const products = await Product.find(filter).sort({createdAt: -1});
-        res.json({products});
+        //get distinct categories from products collection
+        const categoryList = await Product.distinct('category');
+        res.json({products, categoryList});
     } catch (error) {
     res.status(400).json({message: error.message});
     }
