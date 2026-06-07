@@ -1,0 +1,51 @@
+.signup-page {
+  min-height: 100vh;
+  background-image: url("../../assets/loginImage.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 48px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 360px;
+  background: #b3ba88;
+  padding: 28px;
+  border-radius: 24px;
+  box-shadow: 1px 24px 80px rgba(15, 23, 42, 0.5);
+}
+
+.signup-title {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.signup-form {
+  display: grid;
+  gap: 12px;
+}
+
+.signup-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.signup-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  box-sizing: border-box;
+}
+
+.auth-button {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  border-radius: 16px;
+}
