@@ -1,0 +1,189 @@
+/* =====================================
+   NAVBAR
+===================================== */
+
+.navbar-root {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 18px 32px;
+
+  background: linear-gradient(157deg, #b0b88a, #fdd46c);
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* =====================================
+   LOGO
+===================================== */
+
+.navbar-brand {
+  text-decoration: none;
+
+  color: #2f5d50;
+
+  font-size: 2rem;
+  font-weight: 800;
+
+  min-width: 180px;
+
+  letter-spacing: 1px;
+}
+
+/* =====================================
+   SEARCH
+===================================== */
+
+.navbar-search {
+  flex: 1;
+  max-width: 650px;
+}
+
+.navbar-search .MuiOutlinedInput-root {
+  background: white;
+
+  border-radius: 999px;
+
+  height: 56px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.search-icon {
+  color: #2f5d50;
+  margin-right: 10px;
+}
+
+/* =====================================
+   CATEGORY
+===================================== */
+
+.navbar-category {
+  min-width: 250px;
+}
+
+.category-select {
+  background: #eef3ea;
+
+  border-radius: 999px !important;
+
+  height: 56px;
+
+  color: #2f5d50;
+}
+
+/* =====================================
+   ACTIONS
+===================================== */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* =====================================
+   CART
+===================================== */
+
+.cart-button {
+  min-width: 56px !important;
+  width: 56px;
+  height: 56px;
+
+  border-radius: 50% !important;
+
+  background: white !important;
+
+  color: #2f5d50 !important;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.cart-button:hover {
+  background: #fffef8 !important;
+}
+
+.cart-button svg {
+  font-size: 28px;
+}
+
+/* =====================================
+   USER CHIP
+===================================== */
+
+.user-chip {
+  background: white !important;
+
+  color: #2f5d50 !important;
+
+  border-radius: 999px !important;
+
+  padding: 10px 18px !important;
+
+  font-weight: 600 !important;
+
+  text-transform: none !important;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* =====================================
+   LOGIN
+===================================== */
+
+.login-btn {
+  background: white !important;
+
+  color: #2f5d50 !important;
+
+  border-radius: 999px !important;
+
+  text-transform: none !important;
+}
+
+.signup-btn {
+  background: #d97706 !important;
+
+  color: white !important;
+
+  border-radius: 999px !important;
+
+  text-transform: none !important;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 992px) {
+  .navbar-root {
+    flex-wrap: wrap;
+  }
+
+  .navbar-search {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .navbar-category {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+
+  .navbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

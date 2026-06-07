@@ -2,21 +2,21 @@ import { createBrowserRouter, Outlet, RouterProvider, Navigate } from "react-rou
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/Signup/SignUp";
-import ProductDetails from "./pages/ProductDetails";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import AddProduct from "./pages/admin/addProduct";
 import ProductList from "./pages/admin/productList";
 import EditProduct from "./pages/admin/editProduct";
-import Navbar from "./components/Navbar/Navbar";
+import Header from "./components/Header/Header";
 import Cart from "./pages/Cart/Cart";
-import CheckoutAddress from "./pages/CheckoutAddress";
-import Checkout from "./pages/Checkout";
-import OrderSuccess from "./pages/OrderSuccess";
+import CheckoutAddress from "./pages/CheckoutAddress/CheckoutAddress";
+import Checkout from "./pages/Checkout/Checkout";
+import OrderSuccess from "./pages/OrderSuccess/OrderSuccess";
 
 
 function Layout() {
   return (
     <>
-      <Navbar />
+      <Header />
       <Outlet />
     </>
   );

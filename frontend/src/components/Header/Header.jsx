@@ -2,11 +2,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../store/features/product/categoriesSlice.js";
-import api from "../../api/axios";
-import { Badge, Box, Button, IconButton, TextField, Menu, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
-import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import "./Navbar.scss";
+import api from "../../api/axios.js";
+import {
+  Badge,
+  Box,
+  Button,
+  TextField,
+  Menu,
+  MenuItem,
+  FormControl,
+  Select,
+} from "@mui/material";
+import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import "./Header.scss";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -26,7 +35,10 @@ export default function Navbar() {
       if (!userId) return setCartCount(0);
 
       const res = await api.get(`/cart/${userId}`);
-      const total = res.data.items.reduce((sum, item) => sum + item.quantity, 0);
+      const total = res.data.items.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
+      );
       setCartCount(total);
     };
 
@@ -39,7 +51,7 @@ export default function Navbar() {
   }, [userId]);
 
   useEffect(() => {
-    if (categoriesStatus === 'idle') {
+    if (categoriesStatus === "idle") {
       dispatch(fetchCategories());
     }
   }, [categoriesStatus, dispatch]);
@@ -74,38 +86,39 @@ export default function Navbar() {
 
   return (
     <Box component="nav" className="navbar-root">
+      {/* Logo */}
       <Link to="/home" className="navbar-brand">
-        Shopora
+         Shopora
       </Link>
+
+      {/* Search */}
       <Box className="navbar-search">
         <TextField
           value={searchValue}
           onChange={handleSearchChange}
-          placeholder="Search products"
+          placeholder="Search products..."
           variant="outlined"
           size="small"
           fullWidth
           InputProps={{
             startAdornment: (
-              <IconButton edge="start" size="small" className="navbar-search-icon">
-                <ManageSearchOutlinedIcon/>
-              </IconButton>
+              <ManageSearchOutlinedIcon className="search-icon" />
             ),
           }}
         />
       </Box>
+
+      {/* Category */}
       <Box className="navbar-category">
-        <FormControl variant="outlined" className="home-category">
-          <InputLabel id="category-label">Category</InputLabel>
+        <FormControl fullWidth>
           <Select
-            labelId="category-label"
-            id="category"
             value={categoryValue}
             onChange={handleCategoryChange}
-            label="Select Category"
-            className="selectCategory"
+            displayEmpty
+            className="category-select"
           >
-            <MenuItem value="">All Categories</MenuItem>
+            <MenuItem value="">Category</MenuItem>
+
             {categories.map((cat) => (
               <MenuItem key={cat} value={cat}>
                 {cat}
@@ -114,56 +127,45 @@ export default function Navbar() {
           </Select>
         </FormControl>
       </Box>
+
+      {/* Right Side */}
       <Box className="navbar-actions">
-        <Button
-          component={Link}
-          to="/cart"
-          className="navbar-link"
-          startIcon={
-            <Badge badgeContent={cartCount} color="error" className="navbar-badge">
-              <ShoppingCartCheckoutIcon/>
-            </Badge>
-          }
-        >
+        <Button component={Link} to="/cart" className="cart-button">
+          <Badge badgeContent={cartCount} color="error">
+            <ShoppingCartCheckoutIcon />
+          </Badge>
         </Button>
 
         {!userId ? (
           <>
-            <Button component={Link} to="/login" className="navbar-link">
+            <Button className="login-btn" component={Link} to="/login">
               Login
             </Button>
-            <Button component={Link} to="/signup" className="navbar-link">
+
+            <Button className="signup-btn" component={Link} to="/signup">
               Signup
             </Button>
           </>
         ) : (
-            <>
-       <Button
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-      >
-        Hello {localStorage.getItem("userName")} !
-      </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={() => setAnchorEl(null)}
-      >
-        <div>
-        <MenuItem onClick={() => setAnchorEl(null)}>
-          Profile
-        </MenuItem>
-        <MenuItem onClick={() => setAnchorEl(null)}>
-          My Account
-        </MenuItem>
-        <MenuItem onClick={logout} >
-          Logout
-        </MenuItem>
-        </div>
-      </Menu>
+          <>
+            <Button
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+              className="user-chip"
+            >
+              👤 {localStorage.getItem("userName")}
+            </Button>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+            >
+              <MenuItem onClick={() => setAnchorEl(null)}>Profile</MenuItem>
+
+              <MenuItem onClick={() => setAnchorEl(null)}>My Account</MenuItem>
+
+              <MenuItem onClick={logout}>Logout</MenuItem>
+            </Menu>
           </>
         )}
       </Box>

@@ -2,18 +2,33 @@ import { useState, useEffect } from "react";
 import api from "../../api/axios";
 import { useNavigate } from "react-router";
 
+import {
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  IconButton,
+  Box,
+} from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import "./Cart.scss";
+
 export default function Cart() {
   const userId = localStorage.getItem("userId");
   const [cart, setCart] = useState(null);
   const navigate = useNavigate();
 
-  //Load cart data
   const loadCart = async () => {
     if (!userId) return;
+
     const res = await api.get(`/cart/${userId}`);
     setCart(res.data);
   };
-  
 
   useEffect(() => {
     loadCart();
@@ -25,20 +40,28 @@ export default function Cart() {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  //Update item quantity
   const updateQty = async (productId, quantity) => {
     if (quantity === 0) {
       await removeItem(productId);
       return;
     }
 
-    await api.post(`/cart/update`, { userId, productId, quantity });
+    await api.post(`/cart/update`, {
+      userId,
+      productId,
+      quantity,
+    });
+
     loadCart();
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
   if (!cart) {
-    return <div>Loading...</div>;
+    return (
+      <Container className="cart-page">
+        <Typography>Loading...</Typography>
+      </Container>
+    );
   }
 
   const total = cart.items.reduce(
@@ -47,74 +70,111 @@ export default function Cart() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
+    <Container maxWidth="lg" className="cart-page">
+      <Typography variant="h4" className="cart-title">
+        Your Cart
+      </Typography>
 
       {cart.items.length === 0 ? (
-        <div>Your cart is empty.</div>
+        <Typography>Your cart is empty.</Typography>
       ) : (
-        <div className="space-y-4">
-          {cart.items.map((item) => (
-            <div
-              key={item.productId._id}
-              className="flex items-center justify-between p-4 border rounded"
-            >
-              <div className="flex items-center gap-4">
-                <img
-                  src={item.productId.image}
-                  alt={item.productId.title}
-                  className="w-16 h-16 object-cover rounded"
-                />
-                <div>
-                  <h2 className="text-lg font-semibold">
-                    {item.productId.title}
-                  </h2>
-                  <p className="text-gray-600">
-                    ${item.productId.price.toFixed(2)}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() =>
-                    updateQty(item.productId._id, item.quantity - 1)
-                  }
-                  className="px-2 py-1 bg-gray-200 rounded"
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  onClick={() =>
-                    updateQty(item.productId._id, item.quantity + 1)
-                  }
-                  className="px-2 py-1 bg-gray-200 rounded"
-                >
-                  +
-                </button>
-              </div>
-              <div>
-                <p className="font-semibold">
-                  ${(item.productId.price * item.quantity).toFixed(2)}
-                </p>
-              </div>
-              <button
-                onClick={() => removeItem(item.productId._id)}
-                className="text-red-500"
+        <>
+          <div className="cart-list">
+            {cart.items.map((item) => (
+              <Card
+                key={item.productId._id}
+                className="cart-card"
+                elevation={2}
               >
-                Remove
-              </button>
-            </div>
-          ))}
+                <CardContent className="cart-card-content">
+                  <div className="product-info">
+                    <img
+                      src={item.productId.image}
+                      alt={item.productId.title}
+                      className="product-image"
+                    />
 
-          <div className="text-right mt-4">
-            <h2 className="text-xl font-bold">Total: ${total.toFixed(2)}</h2>
+                    <div>
+                      <Typography variant="h6">
+                        {item.productId.title}
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        className="product-price"
+                      >
+                        Rs.{item.productId.price.toFixed(2)}
+                      </Typography>
+                    </div>
+                  </div>
+
+                  <Box className="quantity-controls">
+                    <IconButton
+                      onClick={() =>
+                        updateQty(
+                          item.productId._id,
+                          item.quantity - 1
+                        )
+                      }
+                    >
+                      <RemoveIcon />
+                    </IconButton>
+
+                    <Typography>{item.quantity}</Typography>
+
+                    <IconButton
+                      onClick={() =>
+                        updateQty(
+                          item.productId._id,
+                          item.quantity + 1
+                        )
+                      }
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </Box>
+
+                  <Typography
+                    variant="h6"
+                    className="item-total"
+                  >
+                    Rs.
+                    {(
+                      item.productId.price * item.quantity
+                    ).toFixed(2)}
+                  </Typography>
+
+                  <IconButton
+                    color="error"
+                    onClick={() =>
+                      removeItem(item.productId._id)
+                    }
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-          <button onClick={()=> navigate("/checkout-address")} className="w-full bg-blue-500 text-white p-2 rounded">
-            Proceed to Checkout
-          </button>
-        </div>
+
+          <div className="cart-summary">
+            <Typography variant="h5">
+              Total: Rs.{total.toFixed(2)}
+            </Typography>
+
+            <Button
+              variant="contained"
+              size="large"
+              fullWidth
+              onClick={() =>
+                navigate("/checkout-address")
+              }
+            >
+              Proceed to Checkout
+            </Button>
+          </div>
+        </>
       )}
-    </div>
+    </Container>
   );
 }

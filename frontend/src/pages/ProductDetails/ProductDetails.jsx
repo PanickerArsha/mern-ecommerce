@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {useParams} from 'react-router';
-import api from '../api/axios';
+import api from '../../api/axios';
 
 export default function ProductDetails() {
     const {id} = useParams();
