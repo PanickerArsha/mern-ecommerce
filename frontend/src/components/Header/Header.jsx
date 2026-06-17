@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../store/features/product/categoriesSlice.js";
 import api from "../../api/axios.js";
+import logoImage from "../../assets/logoImage.svg";
 import {
   Badge,
   Box,
@@ -88,7 +89,7 @@ export default function Navbar() {
     <Box component="nav" className="navbar-root">
       {/* Logo */}
       <Link to="/home" className="navbar-brand">
-         Shopora
+        <img src={logoImage} alt="Shopora" className="navbar-logo" />
       </Link>
 
       {/* Search */}

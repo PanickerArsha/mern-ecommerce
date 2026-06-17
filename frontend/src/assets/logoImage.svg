@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">Shopora Logo</title>
+  <desc id="logoDesc">A warm circular mark with a white shopping bag and the Shopora wordmark.</desc>
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2f5d50" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="96" rx="24" fill="none" />
+  <circle cx="48" cy="48" r="30" fill="url(#logoGradient)" />
+  <path d="M36 40h24l-2.4 24H38.4L36 40Zm4.8-6.4a7.2 7.2 0 0 1 14.4 0" fill="none" stroke="#fffef8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="96" y="57" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800" fill="#2f5d50">Shopora</text>
+</svg>

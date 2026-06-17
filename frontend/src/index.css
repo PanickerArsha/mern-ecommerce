@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-image: url("./assets/loginImage.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+}

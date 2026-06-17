@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../api/axios";
 import { useNavigate } from "react-router";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 
 import {
   Container,
@@ -31,8 +32,13 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    loadCart();
-  }, []);
+    const fetchCart = async () => {
+      if (!userId) return;
+      const res = await api.get(`/cart/${userId}`);
+      setCart(res.data);
+    };
+    fetchCart();
+  }, [userId]);
 
   const removeItem = async (productId) => {
     await api.post(`/cart/remove`, { userId, productId });
@@ -66,55 +72,70 @@ export default function Cart() {
 
   const total = cart.items.reduce(
     (sum, item) => sum + item.productId.price * item.quantity,
-    0
+    0,
   );
 
   return (
-    <Container maxWidth="lg" className="cart-page">
-      <Typography variant="h4" className="cart-title">
-        Your Cart
-      </Typography>
+    <Container maxWidth="xl" className="cart-page">
+      <div className="cart-header">
+        <Typography variant="h5" className="cart-title">
+          <ShoppingCartCheckoutIcon style={{ width: "3%", height: "4%" }} />
+          Your Cart
+        </Typography>
+
+        <Typography className="cart-subtitle">
+          Review your items and proceed to checkout
+        </Typography>
+      </div>
 
       {cart.items.length === 0 ? (
-        <Typography>Your cart is empty.</Typography>
+        <div className="empty-cart-card">
+          <Typography variant="h4" className="empty-title">
+            Your cart is empty!
+          </Typography>
+
+          <Typography className="empty-description">
+            Looks like you haven't added anything to your cart yet.
+          </Typography>
+
+          <Button
+            className="continue-shopping-btn"
+            onClick={() => navigate("/home")}
+          >
+            ← Continue Shopping
+          </Button>
+        </div>
       ) : (
-        <>
-          <div className="cart-list">
+        <div className="cart-layout">
+          {/* LEFT SIDE */}
+
+          <div className="cart-left">
             {cart.items.map((item) => (
-              <Card
-                key={item.productId._id}
-                className="cart-card"
-                elevation={2}
-              >
+              <Card key={item.productId._id} className="cart-card">
                 <CardContent className="cart-card-content">
-                  <div className="product-info">
+                  <div className="product-section">
                     <img
                       src={item.productId.image}
                       alt={item.productId.title}
                       className="product-image"
                     />
 
-                    <div>
-                      <Typography variant="h6">
+                    <div className="product-details">
+                      <Typography variant="h5" className="product-title">
                         {item.productId.title}
                       </Typography>
 
-                      <Typography
-                        variant="body2"
-                        className="product-price"
-                      >
-                        Rs.{item.productId.price.toFixed(2)}
-                      </Typography>
+                      <Typography className="stock-text">✓ In Stock</Typography>
                     </div>
                   </div>
 
+                  <div className="price-section">Rs.{item.productId.price}</div>
+
                   <Box className="quantity-controls">
                     <IconButton
+                      className="qty-btn"
                       onClick={() =>
-                        updateQty(
-                          item.productId._id,
-                          item.quantity - 1
-                        )
+                        updateQty(item.productId._id, item.quantity - 1)
                       }
                     >
                       <RemoveIcon />
@@ -123,57 +144,90 @@ export default function Cart() {
                     <Typography>{item.quantity}</Typography>
 
                     <IconButton
+                      className="qty-btn"
                       onClick={() =>
-                        updateQty(
-                          item.productId._id,
-                          item.quantity + 1
-                        )
+                        updateQty(item.productId._id, item.quantity + 1)
                       }
                     >
                       <AddIcon />
                     </IconButton>
                   </Box>
 
-                  <Typography
-                    variant="h6"
-                    className="item-total"
-                  >
+                  <Typography className="item-total">
                     Rs.
-                    {(
-                      item.productId.price * item.quantity
-                    ).toFixed(2)}
+                    {(item.productId.price * item.quantity).toFixed(2)}
                   </Typography>
-
                   <IconButton
                     color="error"
-                    onClick={() =>
-                      removeItem(item.productId._id)
-                    }
+                    className="remove-btn"
+                    onClick={() => removeItem(item.productId._id)}
                   >
                     <DeleteIcon />
                   </IconButton>
                 </CardContent>
               </Card>
             ))}
+
+            <div className="free-delivery">
+              🚚 Yay! You qualify for FREE delivery
+            </div>
           </div>
 
-          <div className="cart-summary">
-            <Typography variant="h5">
-              Total: Rs.{total.toFixed(2)}
+          {/* RIGHT SIDE */}
+
+          <div className="summary-card">
+            <Typography variant="h5" className="summary-title">
+              Order Summary
             </Typography>
 
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>Rs.{total.toFixed(2)}</span>
+            </div>
+
+            <div className="summary-row">
+              <span>Delivery</span>
+              <span className="free">FREE</span>
+            </div>
+
+            <div className="summary-row">
+              <span>Discount</span>
+              <span>Rs.0</span>
+            </div>
+
+            <hr />
+
+            <div className="summary-total">
+              <span>Total</span>
+              <span>Rs.{total.toFixed(2)}</span>
+            </div>
+
             <Button
-              variant="contained"
-              size="large"
+              className="checkout-btn"
               fullWidth
-              onClick={() =>
-                navigate("/checkout-address")
-              }
+              onClick={() => navigate("/checkout")}
             >
-              Proceed to Checkout
+              Proceed To Checkout
             </Button>
+
+            <div className="benefits">
+              <div>
+                🔒
+                <p>Secure Payment</p>
+              </div>
+
+              <div>
+                🔄
+                <p>Easy Returns</p>
+              </div>
+
+              <div>
+                🎧
+                <p>Support</p>
+              </div>
+            </div>
           </div>
-        </>
+        </div>
       )}
     </Container>
   );

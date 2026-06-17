@@ -31,9 +31,20 @@
   font-size: 2rem;
   font-weight: 800;
 
+  display: flex;
+  align-items: center;
+
   min-width: 180px;
 
   letter-spacing: 1px;
+}
+
+.navbar-logo {
+  display: block;
+
+  width: 180px;
+  max-width: 100%;
+  height: auto;
 }
 
 /* =====================================
@@ -180,6 +191,10 @@
 @media (max-width: 768px) {
   .navbar-brand {
     font-size: 1.5rem;
+  }
+
+  .navbar-logo {
+    width: 140px;
   }
 
   .navbar-actions {
